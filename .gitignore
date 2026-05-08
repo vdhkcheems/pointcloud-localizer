@@ -1,0 +1,26 @@
+# macOS / editor
+.DS_Store
+
+# Python caches
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environments
+.venv/
+venv/
+
+# Packaging / build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Local plotting/runtime cache
+.mplconfig/
+
+# Generated run artifacts
+output/
