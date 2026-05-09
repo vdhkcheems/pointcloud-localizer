@@ -34,12 +34,14 @@ In ICP, incremental updates compose as:
 
 ## Setup
 
-Python 3.10+ recommended.
+Python `3.10` to `3.12` is supported for full functionality.
+Open3D currently does not provide wheels for Python `3.13+`, so use Python `3.12`
+if you need `.ply/.pcd` I/O and mesh surface sampling.
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -e .[dev]
+pip install -e ".[dev,open3d]"
 ```
 
 ## CLI usage
@@ -100,3 +102,16 @@ Generated in `output/`:
 - **Outlier handling**: optional max correspondence distance threshold.
 - **Degenerate iteration stop**: early stop when valid correspondences drop below a minimum count.
 - **Normals**: Open3D normal estimation utility is included for future point-to-plane extension.
+
+## Test report (brief)
+
+Testing was run end-to-end with Python 3.12 and Open3D installed.
+
+- **Unit baseline**: `python -m pytest -q` passed (`1 passed`), verifying the custom ICP loop recovers a known noise-free synthetic transform within `1 degree` rotation and `0.01 m` translation.
+- **Single-run synthetic check**: `synthetic-register` in noise-free mode produced near-zero RMSE and an estimated transform matching ground truth.
+- **Robustness sweep (single seed)**: all 9 required cases were generated (`sigma in {0, 0.005, 0.02}` x `{small, medium, large}`), with expected degradation in harder conditions.
+- **Multi-seed robustness (10 seeds)**:
+  - small misalignment: `100%` success across all noise levels,
+  - medium misalignment: `70%` (`sigma=0`), `90%` (`sigma=0.005`), `100%` (`sigma=0.02`),
+  - large misalignment: `40-50%` success depending on noise.
+- **Observed behavior**: as expected for point-to-point ICP, large initial misalignment remains the main failure mode due to local minima/initialization sensitivity.

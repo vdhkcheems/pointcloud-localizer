@@ -7,7 +7,7 @@ name = "pointcloud-localizer"
 version = "0.1.0"
 description = "Custom ICP-based point cloud registration and evaluation toolkit."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.13"
 dependencies = [
   "numpy>=1.25",
   "scipy>=1.11",
@@ -20,7 +20,7 @@ dev = [
   "pytest>=8.0",
 ]
 open3d = [
-  "open3d>=0.18.0",
+  "open3d>=0.18.0; python_version < '3.13'",
 ]
 
 [project.scripts]
